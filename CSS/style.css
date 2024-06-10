@@ -1,0 +1,140 @@
+/* Global styles */
+body {
+    font-family:'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+
+
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Splash page */
+body.splash {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4c593;
+}
+
+.splash-message {
+    text-align: center;
+    color: rgb(243, 242, 241);
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* Index page */
+body.index {
+    background-color:#f4c593;
+}
+
+.index-title {
+    text-align: center;
+    color: ff6600;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    background-color: #ff6600;
+    border-color: #ff6600;
+}
+
+.btn-primary:hover {
+    background-color: #ff6600;
+    border-color: #ff6600;
+}
+
+/* Add page */
+body.add {
+    background-color: #f4c593;
+}
+
+.add-title {
+    text-align: center;
+    color: #ff6600;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    color: #ff6600;
+    font-weight: bold;
+}
+
+/* Common button styles */
+.btn-primary {
+    display: block;
+    margin: 0 auto; /* Center horizontally */
+}
+
+/* Hover effect */
+.btn-primary:hover {
+    background-color: #ff6600;
+    border-color: #ff6600;
+}
+
+
+/* Delete page */
+body.delete {
+    background-color: #f4c593;
+}
+
+.delete-title {
+    text-align: center;
+    color: orange;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* Edit page */
+body.edit {
+    background-color: #f4c593;
+}
+
+.edit-title {
+    text-align: center;
+    color: orange;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* Summary page */
+body.summary {
+    background-color: #f4c593;
+}
+
+.summary-title {
+    text-align: center;
+    color: orange;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+#expense-summary, #category-summary {
+    text-align: center;
+    color: orange;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+#expense-chart {
+    margin: 0 auto;
+    display: block;
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+}
+
+body.register {
+    background-color: #f4c593;
+}
+body.login {
+    background-color: #f4c593;
+}
