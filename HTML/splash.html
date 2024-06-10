@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Expense Tracker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ff6600;
+            font-family: 'Times New Roman', Times, serif;
+            color: white;
+        }
+        .splash-container {
+            text-align: center;
+        }
+        .splash-message {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="splash-container">
+    <h1 class="splash-message">Welcome to the Expense Tracker</h1>
+    <p>Loading...</p>
+    <p>Please wait for a while...</p>
+</div>
+<script>
+    setTimeout(function() {
+        window.location.href = "login.html";
+    }, 3000);
+</script>
+</body>
+</html>

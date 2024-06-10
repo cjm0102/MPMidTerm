@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Summary</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #ff782f;
+        }
+        .summary-container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .summary-item {
+            margin-top: 20px;
+        }
+        #expense-summary, #category-summary {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        #category-summary ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        #category-summary ul li {
+            display: flex;
+            justify-content: space-between;
+        }
+        .back-button {
+            padding: 0.25rem 0.5rem; /* Smaller padding */
+            font-size: 0.8rem; /* Smaller font size */
+        }
+        .back-button i {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body class="summary">
+<nav class="navbar navbar-light">
+    <a class="navbar-brand" href="#">
+        <button class="btn btn-secondary back-button" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <span class="navbar-text ml-2">
+                <h1 class="h3 d-inline">Summary</h1>
+            </span>
+    </a>
+</nav>
+<div class="container summary-container">
+    <h1 class="mt-4">Expense Summary</h1>
+    <div class="form-group">
+        <label for="month-select">Select Month:</label>
+        <input type="month" id="month-select" class="form-control">
+    </div>
+    <div id="expense-summary" class="summary-item"></div>
+    <div id="category-summary" class="summary-item"></div>
+    <canvas id="expense-chart" class="summary-item"></canvas>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="expense.js"></script>
+<script>
+    $(document).ready(function() {
+        let chart;
+
+        $('#month-select').on('change', function() {
+            const selectedMonth = $(this).val();
+            updateSummary(selectedMonth);
+        });
+
+        function updateSummary(month) {
+            const data = fetchExpenseData(month);
+
+            // Update total expense
+            const totalExpense = data.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+            $('#expense-summary').html(`Total Expense: RM${totalExpense.toFixed(2)}`);
+
+            // Update total expense by category
+            const categorySummary = {};
+            data.forEach(expense => {
+                if (!categorySummary[expense.category]) {
+                    categorySummary[expense.category] = 0;
+                }
+                categorySummary[expense.category] += parseFloat(expense.amount);
+            });
+
+            let categoryHtml = '<ul class="list-group">';
+            for (const category in categorySummary) {
+                categoryHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${category}
+                    <span class="badge badge-primary badge-pill">RM${categorySummary[category].toFixed(2)}</span>
+                </li>`;
+            }
+            categoryHtml += '</ul>';
+            $('#category-summary').html(categoryHtml);
+
+            // Clear previous chart
+            if (chart) {
+                chart.destroy();
+            }
+
+            // Generate the pie chart
+            const ctx = $('#expense-chart')[0].getContext('2d');
+            const labels = Object.keys(categorySummary);
+            const values = Object.values(categorySummary);
+            chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `RM${tooltipItem.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function fetchExpenseData(month) {
+            const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+            return expenses.filter(expense => expense.date.startsWith(month));
+        }
+
+        // Initial load for the current month
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        $('#month-select').val(currentMonth);
+        updateSummary(currentMonth);
+    });
+</script>
+</body>
+</html>
